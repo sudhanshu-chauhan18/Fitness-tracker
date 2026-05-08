@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 public class ActivityService {
@@ -35,6 +36,7 @@ public class ActivityService {
         Activity savedActivity = activityRepository.save(activity);
         return mapToResponse(savedActivity);
     }
+
 
     private ActivityResponse mapToResponse(Activity savedActivity) {
 

@@ -11,7 +11,7 @@ public class OpenAPIConfig {
 
     @Bean
     public OpenAPI CustomAPI() {
-      return new OpenAPI()
+        return new OpenAPI()
               .info(new Info()
                       .title("Fitness Tracking API")
                       .version("v1.O")

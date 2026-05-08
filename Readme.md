@@ -1,6 +1,9 @@
 # 🏋️ Fitness Tracker API
 
-A production-grade **RESTful Fitness Tracking API** built with **Spring Boot 4**, **Spring Security**, and **MySQL**. The application allows users to register, authenticate via JWT, log fitness activities (running, cycling, yoga, etc.), and receive personalized recommendations — all through a secure, well-documented API.
+A production-grade **RESTful Fitness Tracking API** built with **Spring Boot 4**,
+**Spring Security**, and **MySQL**. The application allows users to register, authenticate 
+via JWT, log fitness activities (running, cycling, yoga, etc.), and receive personalized 
+recommendations — all through a secure, well-documented API.
 
 ---
 
@@ -91,6 +94,8 @@ Client Request
 FitnessTacker/
 ├── pom.xml                          # Maven project configuration & dependencies
 ├── mvnw / mvnw.cmd                  # Maven Wrapper scripts
+├── Dockerfile                       # Docker image definition (Eclipse Temurin JRE 21)
+├── docker-compose.yml               # Multi-container orchestration (App + MySQL)
 ├── src/
 │   ├── main/
 │   │   ├── java/com/example/FitnessTacker/
@@ -106,6 +111,7 @@ FitnessTacker/
 │   │   │   ├── controller/                      # REST Controllers
 │   │   │   │   ├── AuthController.java          # Register & Login endpoints
 │   │   │   │   ├── ActivityController.java      # Activity CRUD endpoints
+│   │   │   │   ├── UserController.java          # User listing endpoint
 │   │   │   │   └── RecommendationController.java # Recommendation endpoints
 │   │   │   │
 │   │   │   ├── service/                         # Business Logic
@@ -134,13 +140,22 @@ FitnessTacker/
 │   │   │   │   └── CustomUserDetailsService.java # UserDetailsService implementation
 │   │   │   │
 │   │   │   ├── config/                          # App Configuration
-│   │   │   │   └── OpenAPIConfig.java           # Swagger/OpenAPI metadata
+│   │   │   │   ├── OpenAPIConfig.java           # Swagger/OpenAPI metadata
+│   │   │   │   └── CorsConfig.java              # CORS policy for /api/** routes
 │   │   │   │
 │   │   │   └── exception/                       # Exception Handling
 │   │   │       └── GlobalExceptionHandler.java  # Validation error handler
 │   │   │
 │   │   └── resources/
-│   │       └── application.properties           # Database & Hibernate config
+│   │       ├── application.properties           # Database & Hibernate config
+│   │       └── static/                          # Frontend UI (served by Spring)
+│   │           ├── index.html                   # Login / Register page
+│   │           ├── dashboard.html               # User dashboard with stats
+│   │           ├── activities.html              # Activity logging & history
+│   │           ├── recommendations.html         # Tips inbox viewer
+│   │           ├── community.html               # Browse athletes & give tips
+│   │           ├── styles.css                   # Global dark-theme stylesheet
+│   │           └── app.js                       # Shared API layer & UI utilities
 │   │
 │   └── test/                                    # Test directory (scaffold only)
 └── target/                                      # Compiled output
@@ -208,6 +223,14 @@ The application uses **3 main tables** with UUID-based primary keys, managed by 
 |--------|--------------------|---------------|--------------------------------------|
 | POST   | `/api/activities`  | ✅ Yes (JWT)   | Log a new fitness activity           |
 | GET    | `/api/activities`  | ✅ Yes (JWT)   | Get all activities for a user (via `X-USER-ID` header) |
+
+### 👥 Users — `/api/users`
+
+| Method | Endpoint       | Auth Required | Description              |
+|--------|----------------|---------------|--------------------------|
+| GET    | `/api/users`   | ❌ No (Public) | List all registered users |
+
+> **Note:** This endpoint is publicly accessible and used by the Community frontend page to display all athletes.
 
 ### 💡 Recommendations — `/api/recommendation`
 
@@ -450,8 +473,21 @@ The application implements a **Global Exception Handler** using `@RestController
 |--------------------------|-----------------------------------------------------------------------------|
 | `ddl-auto=update`        | Hibernate auto-creates/updates schema. Use `validate` in production.       |
 | `show-sql=true`          | Logs all SQL statements. Disable in production for performance.            |
-| JWT Secret               | Hardcoded in `JWTUtils.java`. **Externalize to env vars for production.**  |
+| JWT Secret               | Stored in `JWTUtils.java`. **Externalize to env vars for production.**     |
 | JWT Expiration           | Set to 48 hours (172800000 ms) in `JWTUtils.java`.                        |
+
+### CORS Configuration
+
+The application includes a global CORS policy via `CorsConfig.java`:
+
+| Setting            | Value                                 |
+|--------------------|---------------------------------------|
+| **Allowed Origins**| `*` (all origins)                     |
+| **Allowed Methods**| `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS` |
+| **Allowed Headers**| `*` (all headers)                     |
+| **Path Pattern**   | `/api/**`                             |
+
+> **⚠️ Production Note:** Restrict `allowedOrigins` to your actual frontend domain(s) before deploying to production.
 
 
 ---
@@ -538,6 +574,51 @@ curl -X GET http://localhost:8080/api/recommendation/user/<USER_ID> \
 
 ---
 
+## 🖥 Frontend UI
+
+The application ships with a **built-in static frontend** served directly by Spring Boot from `src/main/resources/static/`. No separate frontend server is needed.
+
+### Pages
+
+| Page                     | File                    | Description                                              |
+|--------------------------|-------------------------|----------------------------------------------------------|
+| **Login / Register**     | `index.html`            | Auth page with tabbed Login & Register forms             |
+| **Dashboard**            | `dashboard.html`        | Overview stats (total activities, calories, duration), recent activities, activity breakdown chart |
+| **Activities**           | `activities.html`       | Log new workouts with custom metrics, view/filter activity history |
+| **Tips Inbox**           | `recommendations.html`  | View received tips filtered by category (Improvements, Suggestions, Safety) |
+| **Community**            | `community.html`        | Browse all registered athletes, view their activities, and send them personalised tips via a modal |
+
+### Frontend Architecture
+
+- **`app.js`** — Shared module containing:
+  - `Auth` — LocalStorage-based session management (token + user)
+  - `api()` — Core fetch wrapper with JWT injection and error handling
+  - `AuthAPI` / `ActivityAPI` / `RecommendationAPI` / `UserAPI` — Endpoint wrappers
+  - `UI` — Toast notifications, button loading states, date/duration formatting, navbar renderer
+  - `ACTIVITY_TYPES` — Enum mirror matching the Java `ActivityType` enum
+
+- **`styles.css`** — Dark-theme design system with CSS custom properties, responsive grid layouts, card components, and micro-animations
+
+### API Base URL
+
+The frontend connects to the backend via the `API_BASE` constant in `app.js`:
+
+```js
+const API_BASE = "http://localhost:8080";  // Change for Docker: http://localhost:8085
+```
+
+### Auth Flow (Frontend)
+
+```
+1. User visits index.html  →  Login / Register forms
+2. On login success        →  JWT + user object stored in localStorage
+3. Protected pages         →  Auth.require() redirects to index.html if not logged in
+4. API calls               →  Authorization header auto-injected by api() wrapper
+5. Logout                  →  localStorage cleared, redirect to index.html
+```
+
+---
+
 ## 📚 API Documentation (Swagger)
 
 The project integrates **SpringDoc OpenAPI 3** with a custom configuration providing:
@@ -567,6 +648,72 @@ Both endpoints are **publicly accessible** (no JWT required).
 
 The JAR will be generated at: `target/FitnessTacker-0.0.1-SNAPSHOT.jar`
 
+### Docker
+
+The project includes a `Dockerfile` using **Eclipse Temurin JRE 21 Alpine**:
+
+```bash
+# Build the JAR first
+./mvnw clean package -DskipTests
+
+# Build the Docker image
+docker build -t fitness:latest .
+```
+
+### Docker Compose (App + MySQL)
+
+A `docker-compose.yml` is provided to run both the application and MySQL 8 together:
+
+```bash
+docker compose up -d
+```
+
+| Service   | Container Name    | Port Mapping   | Description             |
+|-----------|-------------------|----------------|-------------------------|
+| `mysql`   | `fitness-mysql`   | `3307:3306`    | MySQL 8 with health check |
+| `app`     | `fitness-app`     | `8085:8080`    | Spring Boot application  |
+
+**Environment Variables (docker-compose.yml):**
+
+> ⚠️ Replace the placeholder values below with your own secure credentials before deploying.
+
+| Variable                       | Service | Description                |
+|--------------------------------|---------|----------------------------|
+| `MYSQL_ROOT_PASSWORD`          | mysql   | MySQL root password        |
+| `MYSQL_DATABASE`               | mysql   | Database name to create    |
+| `SPRING_DATASOURCE_URL`        | app     | JDBC connection string     |
+| `SPRING_DATASOURCE_USERNAME`   | app     | Database username          |
+| `SPRING_DATASOURCE_PASSWORD`   | app     | Database password          |
+
+The app container waits for MySQL to be healthy before starting (`depends_on` with `service_healthy` condition).
+
+---
+
+## 🔧 Environment Variables
+
+For production deployments, externalize all sensitive configuration:
+
+| Variable                     | Description                             | Default (Dev Only)      |
+|------------------------------|-----------------------------------------|-------------------------|
+| `SPRING_DATASOURCE_URL`      | JDBC MySQL connection URL               | `jdbc:mysql://localhost:3306/fitness_demo` |
+| `SPRING_DATASOURCE_USERNAME` | Database username                       | `root`                  |
+| `SPRING_DATASOURCE_PASSWORD` | Database password                       | *(set your own)*        |
+| `JWT_SECRET`                 | Base64-encoded 256-bit HMAC key         | *(hardcoded in JWTUtils — externalize for prod)* |
+| `JWT_EXPIRATION_MS`          | Token TTL in milliseconds               | `172800000` (48 hours)  |
+
+
+---
+
+## 🗺 Roadmap / Future Enhancements
+
+- [ ] AI-powered recommendation text generation (populate `type` and `recommendation` fields)
+- [ ] Pagination for activity and recommendation lists
+- [ ] Password strength validation and rate limiting
+- [ ] User profile edit and avatar upload
+- [ ] Activity update and delete endpoints
+- [ ] Unit and integration test coverage
+- [ ] Externalize JWT secret to environment variable / Spring config
+- [ ] Restrict CORS origins for production
 
 ---
 

@@ -43,10 +43,11 @@ public class JWTUtils {
         try{
             Jwts.parser().verifyWith((SecretKey) key()).build()
                     .parseSignedClaims(token);
+            return true;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     private Key key(){

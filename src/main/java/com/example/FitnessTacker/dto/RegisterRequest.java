@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.bridge.Message;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class RegisterRequest {
 
     @NotBlank(message = "Email is Required.")

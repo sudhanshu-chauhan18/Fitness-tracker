@@ -13,7 +13,9 @@ import java.util.List;
 @RequestMapping("/api/activities")
 @RequiredArgsConstructor
 public class ActivityController {
+
     private final ActivityService activityService;
+
 
     @PostMapping
     public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest activityRequest){
@@ -27,8 +29,6 @@ public class ActivityController {
     ){
         return ResponseEntity.ok(activityService.getUserActivities(userId));
     }
-
-
 
 
 }

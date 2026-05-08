@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,10 @@ public class UserService {
 
     public UserResponse register(RegisterRequest request) {
         UserRole role = request.getRole() != null ? request.getRole() : UserRole.USER;
+        if(userRepository.findByEmail(request.getEmail()).isPresent()){
+            throw new RuntimeException("Email Already Exits. Use a Different One");
+        }
+
         User user = User.builder()
                 .email(request.getEmail())
                 .firstName(request.getFirstName())
@@ -43,9 +50,11 @@ public class UserService {
 //                List.of()
 //        );
 
+
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
     }
+
 
     public UserResponse mapToResponse(User savedUser) {
         UserResponse response = new UserResponse();
@@ -59,11 +68,19 @@ public class UserService {
         return response;
     }
 
+
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     // for the check email and password of user during login.
     public User authenticate(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail());
-        if(user == null )
-            throw new RuntimeException("Invalid Email");
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+                .orElseThrow(()-> new RuntimeException("Invalid Email"));
+
 
         if(!passwordEncoder.matches(loginRequest.getPassword() , user.getPassword()))
             throw new RuntimeException("Invalid Password");
