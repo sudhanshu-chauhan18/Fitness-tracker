@@ -1,139 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitnessTacker — Login</title>
+  <title>FitnessTracker — Login</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
 
-<div class="auth-page">
-  <div class="auth-card fade-in">
+  <div class="auth-page">
+    <div class="auth-card fade-in">
 
-    <!-- Logo -->
-    <div class="auth-logo">
-      <div class="auth-logo__mark">FT</div>
-      <span class="auth-logo__text">FitnessTacker</span>
-    </div>
-
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
-      <button class="auth-tab"        id="tab-register" onclick="switchTab('register')">Register</button>
-    </div>
-
-    <!-- ── LOGIN FORM ── -->
-    <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="you@example.com" required />
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo__mark">FT</div>
+        <span class="auth-logo__text">FitnessTracker</span>
       </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="login-password" placeholder="••••••••" required />
-      </div>
-      <button type="submit" class="btn btn--primary btn--full" id="btn-login">
-        Login
-      </button>
-      <div class="auth-footer">
-<!--        API runs on-->
-<!--        <code style="color:var(&#45;&#45;accent-blue)">localhost:8080</code>-->
-<!--        by default — change in <code>app.js</code>-->
-      </div>
-    </form>
 
-    <!-- ── REGISTER FORM ── -->
-    <form class="auth-form" id="form-register" onsubmit="handleRegister(event)">
-      <div class="form-row">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+        <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- ── LOGIN FORM ── -->
+      <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label>First Name</label>
-          <input type="text" id="reg-firstName" placeholder="John" />
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" required />
         </div>
         <div class="form-group">
-          <label>Last Name</label>
-          <input type="text" id="reg-lastName" placeholder="Doe" />
+          <label>Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required />
         </div>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="reg-email" placeholder="you@example.com" required />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="reg-password" placeholder="••••••••" required />
-      </div>
-      <div class="form-group">
-        <label>Role</label>
-        <select id="reg-role">
-          <option value="USER">User</option>
-          <option value="ADMIN">Admin</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn--primary btn--full" id="btn-register">
-        Create Account
-      </button>
-    </form>
+        <button type="submit" class="btn btn--primary btn--full" id="btn-login">
+          Login
+        </button>
+        <div class="auth-footer">
+          <!--        API runs on-->
+          <!--        <code style="color:var(&#45;&#45;accent-blue)">localhost:8080</code>-->
+          <!--        by default — change in <code>app.js</code>-->
+        </div>
+      </form>
 
+      <!-- ── REGISTER FORM ── -->
+      <form class="auth-form" id="form-register" onsubmit="handleRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="reg-firstName" placeholder="John" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="reg-lastName" placeholder="Doe" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="reg-password" placeholder="••••••••" required />
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select id="reg-role">
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full" id="btn-register">
+          Create Account
+        </button>
+      </form>
+
+    </div>
   </div>
-</div>
 
-<script src="app.js"></script>
-<script>
-  // Redirect if already logged in
-  if (Auth.isLoggedIn()) {
-    window.location.href = "dashboard.html";
-  }
-
-  function switchTab(tab) {
-    document.getElementById("tab-login").classList.toggle("active", tab === "login");
-    document.getElementById("tab-register").classList.toggle("active", tab === "register");
-    document.getElementById("form-login").classList.toggle("active", tab === "login");
-    document.getElementById("form-register").classList.toggle("active", tab === "register");
-  }
-
-  async function handleLogin(e) {
-    e.preventDefault();
-    const btn = document.getElementById("btn-login");
-    UI.btnLoading(btn, true);
-    try {
-      const data = await AuthAPI.login({
-        email: document.getElementById("login-email").value.trim(),
-        password: document.getElementById("login-password").value,
-      });
-      // data = { token, user: { id, email, firstName, lastName, password } }
-      Auth.set(data.token, data.user);
-      UI.toast("Welcome back, " + (data.user?.firstName || "User") + "!");
-      setTimeout(() => (window.location.href = "dashboard.html"), 700);
-    } catch (err) {
-      UI.toast(err.message || "Login failed", "error");
-      UI.btnLoading(btn, false);
+  <script src="app.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (Auth.isLoggedIn()) {
+      window.location.href = "dashboard.html";
     }
-  }
 
-  async function handleRegister(e) {
-    e.preventDefault();
-    const btn = document.getElementById("btn-register");
-    UI.btnLoading(btn, true);
-    try {
-      await AuthAPI.register({
-        email: document.getElementById("reg-email").value.trim(),
-        password: document.getElementById("reg-password").value,
-        firstName: document.getElementById("reg-firstName").value.trim(),
-        lastName: document.getElementById("reg-lastName").value.trim(),
-        role: document.getElementById("reg-role").value,
-      });
-      UI.toast("Account created! Please log in.");
-      switchTab("login");
-      document.getElementById("login-email").value =
-        document.getElementById("reg-email").value;
-    } catch (err) {
-      const msg = err.message || "Registration failed. Please try again.";
-      UI.toast(msg, "error");
-    } finally {
-      UI.btnLoading(btn, false);
+    function switchTab(tab) {
+      document.getElementById("tab-login").classList.toggle("active", tab === "login");
+      document.getElementById("tab-register").classList.toggle("active", tab === "register");
+      document.getElementById("form-login").classList.toggle("active", tab === "login");
+      document.getElementById("form-register").classList.toggle("active", tab === "register");
     }
-  }
-</script>
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-login");
+      UI.btnLoading(btn, true);
+      try {
+        const data = await AuthAPI.login({
+          email: document.getElementById("login-email").value.trim(),
+          password: document.getElementById("login-password").value,
+        });
+        // data = { token, user: { id, email, firstName, lastName, password } }
+        Auth.set(data.token, data.user);
+        UI.toast("Welcome back, " + (data.user?.firstName || "User") + "!");
+        setTimeout(() => (window.location.href = "dashboard.html"), 700);
+      } catch (err) {
+        UI.toast(err.message || "Login failed", "error");
+        UI.btnLoading(btn, false);
+      }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-register");
+      UI.btnLoading(btn, true);
+      try {
+        await AuthAPI.register({
+          email: document.getElementById("reg-email").value.trim(),
+          password: document.getElementById("reg-password").value,
+          firstName: document.getElementById("reg-firstName").value.trim(),
+          lastName: document.getElementById("reg-lastName").value.trim(),
+          role: document.getElementById("reg-role").value,
+        });
+        UI.toast("Account created! Please log in.");
+        switchTab("login");
+        document.getElementById("login-email").value =
+          document.getElementById("reg-email").value;
+      } catch (err) {
+        const msg = err.message || "Registration failed. Please try again.";
+        UI.toast(msg, "error");
+      } finally {
+        UI.btnLoading(btn, false);
+      }
+    }
+  </script>
 </body>
+
 </html>

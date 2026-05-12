@@ -5,7 +5,7 @@
 //    Docker     → http://localhost:8085
 // ============================================================
 
-const API_BASE = "http://localhost:8080";
+const API_BASE = "";
 
 // ── Auth helpers ────────────────────────────────────────────
 const Auth = {
@@ -205,21 +205,26 @@ const UI = {
     const pages = [
       { href: "dashboard.html", label: "Dashboard" },
       { href: "activities.html", label: "Activities" },
-      { href: "community.html",       label: "Community" },
+      { href: "community.html", label: "Community" },
       { href: "recommendations.html", label: "Recommendations" },
     ];
     nav.innerHTML = `
       <div class="nav__brand">
         <span class="nav__logo">FT</span>
-        <span class="nav__title">FitnessTacker</span>
+        <span class="nav__title">FitnessTracker</span>
       </div>
+      <button class="nav__hamburger" onclick="document.querySelector('.nav__links').classList.toggle('active'); document.querySelector('.nav__user').classList.toggle('active');">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
       <ul class="nav__links">
         ${pages
-          .map(
-            (p) =>
-              `<li><a href="${p.href}" class="${p.href === activePage ? "active" : ""}">${p.label}</a></li>`
-          )
-          .join("")}
+        .map(
+          (p) =>
+            `<li><a href="${p.href}" class="${p.href === activePage ? "active" : ""}">${p.label}</a></li>`
+        )
+        .join("")}
       </ul>
       <div class="nav__user">
         <span class="nav__avatar">${user?.firstName?.[0]?.toUpperCase() || "U"}</span>

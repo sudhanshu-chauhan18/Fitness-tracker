@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitnessTacker — Activities</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitnessTracker — Activities</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -13,239 +13,239 @@
 
 <main class="page">
 
-  <!-- Page Header -->
-  <div class="page-header fade-in">
-    <h1>YOUR <span>ACTIVITIES</span></h1>
-    <p>Log workouts and track your progress over time.</p>
-  </div>
-
-  <div class="grid-2" style="align-items:start">
-
-    <!-- ── LOG ACTIVITY FORM ───────────────────────────────── -->
-    <div class="card card--accent fade-in" style="position:sticky;top:80px">
-      <h3 class="section-title">Log New Activity</h3>
-
-      <form id="activity-form" onsubmit="handleTrack(event)">
-
-        <div class="form-group">
-          <label>Activity Type</label>
-          <select id="act-type" required>
-            <option value="">— Select type —</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Duration (minutes)</label>
-            <input type="number" id="act-duration" min="1" max="600" placeholder="e.g. 45" required />
-          </div>
-          <div class="form-group">
-            <label>Calories Burned</label>
-            <input type="number" id="act-calories" min="0" placeholder="e.g. 320" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Start Time</label>
-          <input type="datetime-local" id="act-startTime" required />
-        </div>
-
-        <!-- Additional Metrics (JSON key-value builder) -->
-        <div class="form-group">
-          <label style="display:flex;justify-content:space-between">
-            <span>Additional Metrics</span>
-            <button type="button" class="btn btn--ghost btn--sm" onclick="addMetric()">+ Add</button>
-          </label>
-          <div id="metrics-list" style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.25rem">
-            <!-- dynamic rows -->
-          </div>
-          <p style="font-size:0.75rem;color:var(--text-3);margin-top:0.4rem">
-            e.g. distance: 5.2, pace: "5:30/km", heartRate: 148
-          </p>
-        </div>
-
-        <button type="submit" class="btn btn--primary btn--full" id="btn-track">
-          Log Activity
-        </button>
-      </form>
+    <!-- Page Header -->
+    <div class="page-header fade-in">
+        <h1>YOUR <span>ACTIVITIES</span></h1>
+        <p>Log workouts and track your progress over time.</p>
     </div>
 
-    <!-- ── ACTIVITY LIST ───────────────────────────────────── -->
-    <div class="fade-in">
-      <!-- Filter Bar -->
-      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center">
-        <h3 class="section-title" style="margin-bottom:0;flex:1">All Activities</h3>
-        <select id="filter-type" onchange="filterActivities()" style="
+    <div class="grid-2" style="align-items:start">
+
+        <!-- ── LOG ACTIVITY FORM ───────────────────────────────── -->
+        <div class="card card--accent fade-in" style="position:sticky;top:80px">
+            <h3 class="section-title">Log New Activity</h3>
+
+            <form id="activity-form" onsubmit="handleTrack(event)">
+
+                <div class="form-group">
+                    <label>Activity Type</label>
+                    <select id="act-type" required>
+                        <option value="">— Select type —</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (minutes)</label>
+                        <input type="number" id="act-duration" min="1" max="600" placeholder="e.g. 45" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Calories Burned</label>
+                        <input type="number" id="act-calories" min="0" placeholder="e.g. 320" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Start Time</label>
+                    <input type="datetime-local" id="act-startTime" required />
+                </div>
+
+                <!-- Additional Metrics (JSON key-value builder) -->
+                <div class="form-group">
+                    <label style="display:flex;justify-content:space-between">
+                        <span>Additional Metrics</span>
+                        <button type="button" class="btn btn--ghost btn--sm" onclick="addMetric()">+ Add</button>
+                    </label>
+                    <div id="metrics-list" style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.25rem">
+                        <!-- dynamic rows -->
+                    </div>
+                    <p style="font-size:0.75rem;color:var(--text-3);margin-top:0.4rem">
+                        e.g. distance: 5.2, pace: "5:30/km", heartRate: 148
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn--primary btn--full" id="btn-track">
+                    Log Activity
+                </button>
+            </form>
+        </div>
+
+        <!-- ── ACTIVITY LIST ───────────────────────────────────── -->
+        <div class="fade-in">
+            <!-- Filter Bar -->
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center">
+                <h3 class="section-title" style="margin-bottom:0;flex:1">All Activities</h3>
+                <select id="filter-type" onchange="filterActivities()" style="
           background:var(--surface-2);border:1px solid var(--border);
           color:var(--text);padding:0.4rem 0.75rem;border-radius:var(--radius-sm);
           font-size:0.8rem;cursor:pointer">
-          <option value="">All Types</option>
-        </select>
-      </div>
+                    <option value="">All Types</option>
+                </select>
+            </div>
 
-      <div id="activities-container">
-        <div class="spinner"></div>
-      </div>
+            <div id="activities-container">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
     </div>
-
-  </div>
 </main>
 
 <script src="app.js"></script>
 <script>
-  if (!Auth.require()) throw new Error("Redirecting");
-  UI.renderNav("activities.html");
+    if (!Auth.require()) throw new Error("Redirecting");
+    UI.renderNav("activities.html");
 
-  let allActivities = [];
+    let allActivities = [];
 
-  // ── Populate dropdowns ────────────────────────────────────
-  const typeSelect = document.getElementById("act-type");
-  const filterSelect = document.getElementById("filter-type");
-  ACTIVITY_TYPES.forEach((t) => {
-    typeSelect.innerHTML += `<option value="${t}">${UI.activityIcon(t)} ${t.replace("_", " ")}</option>`;
-    filterSelect.innerHTML += `<option value="${t}">${t.replace("_", " ")}</option>`;
-  });
-
-  // Default start time to now
-  const now = new Date();
-  now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-  document.getElementById("act-startTime").value = now.toISOString().slice(0, 16);
-
-  // ── Metric Row builder ────────────────────────────────────
-  function addMetric(key = "", val = "") {
-    const row = document.createElement("div");
-    row.style.cssText = "display:flex;gap:0.5rem;align-items:center";
-    row.innerHTML = `
-      <input type="text"   class="metric-key" placeholder="Key (e.g. distance)"
-             value="${key}" style="flex:1;background:var(--surface-2);border:1px solid var(--border);
-             border-radius:var(--radius-sm);padding:0.45rem 0.7rem;color:var(--text);font-size:0.85rem"/>
-      <input type="text"   class="metric-val" placeholder="Value"
-             value="${val}" style="flex:1;background:var(--surface-2);border:1px solid var(--border);
-             border-radius:var(--radius-sm);padding:0.45rem 0.7rem;color:var(--text);font-size:0.85rem"/>
-      <button type="button" onclick="this.parentElement.remove()"
-        style="background:transparent;border:none;color:var(--text-3);font-size:1.1rem;cursor:pointer;padding:0 4px">✕</button>
-    `;
-    document.getElementById("metrics-list").appendChild(row);
-  }
-
-  function collectMetrics() {
-    const obj = {};
-    document.querySelectorAll("#metrics-list > div").forEach((row) => {
-      const k = row.querySelector(".metric-key").value.trim();
-      const v = row.querySelector(".metric-val").value.trim();
-      if (k) {
-        // Try numeric, else string
-        obj[k] = isNaN(v) ? v : Number(v);
-      }
+    // ── Populate dropdowns ────────────────────────────────────
+    const typeSelect = document.getElementById("act-type");
+    const filterSelect = document.getElementById("filter-type");
+    ACTIVITY_TYPES.forEach((t) => {
+      typeSelect.innerHTML += `<option value="${t}">${UI.activityIcon(t)} ${t.replace("_", " ")}</option>`;
+      filterSelect.innerHTML += `<option value="${t}">${t.replace("_", " ")}</option>`;
     });
-    return Object.keys(obj).length ? obj : null;
-  }
 
-  // ── Track Activity ────────────────────────────────────────
-  async function handleTrack(e) {
-    e.preventDefault();
-    const btn = document.getElementById("btn-track");
-    UI.btnLoading(btn, true);
+    // Default start time to now
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById("act-startTime").value = now.toISOString().slice(0, 16);
 
-    const startTime = document.getElementById("act-startTime").value;
-    const payload = {
-      userId: Auth.userId(),
-      type: document.getElementById("act-type").value,
-      duration: parseInt(document.getElementById("act-duration").value),
-      caloriesBurned: parseInt(document.getElementById("act-calories").value) || null,
-      startTime: startTime ? new Date(startTime).toISOString().replace("Z", "") : null,
-      additionalMetrics: collectMetrics(),
-    };
-
-    try {
-      await ActivityAPI.track(payload);
-      UI.toast("Activity logged successfully! 🔥");
-      document.getElementById("activity-form").reset();
-      document.getElementById("metrics-list").innerHTML = "";
-      // Reset datetime
-      const n = new Date();
-      n.setMinutes(n.getMinutes() - n.getTimezoneOffset());
-      document.getElementById("act-startTime").value = n.toISOString().slice(0, 16);
-      await loadActivities();
-    } catch (err) {
-      UI.toast(err.message || "Failed to log activity", "error");
-    } finally {
-      UI.btnLoading(btn, false);
-    }
-  }
-
-  // ── Load & Render Activities ──────────────────────────────
-  async function loadActivities() {
-    const container = document.getElementById("activities-container");
-    container.innerHTML = `<div class="spinner"></div>`;
-    try {
-      allActivities = await ActivityAPI.getByUser(Auth.userId());
-      // Sort newest first
-      allActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      renderActivities(allActivities);
-    } catch (err) {
-      container.innerHTML = `<p style="color:var(--accent-err);font-size:0.875rem">${err.message}</p>`;
-    }
-  }
-
-  function renderActivities(list) {
-    const container = document.getElementById("activities-container");
-    if (list.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-state__icon">🏋️</div>
-          <p>No activities found.<br>Log your first workout using the form!</p>
-        </div>`;
-      return;
+    // ── Metric Row builder ────────────────────────────────────
+    function addMetric(key = "", val = "") {
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;gap:0.5rem;align-items:center";
+      row.innerHTML = `
+        <input type="text"   class="metric-key" placeholder="Key (e.g. distance)"
+               value="${key}" style="flex:1;background:var(--surface-2);border:1px solid var(--border);
+               border-radius:var(--radius-sm);padding:0.45rem 0.7rem;color:var(--text);font-size:0.85rem"/>
+        <input type="text"   class="metric-val" placeholder="Value"
+               value="${val}" style="flex:1;background:var(--surface-2);border:1px solid var(--border);
+               border-radius:var(--radius-sm);padding:0.45rem 0.7rem;color:var(--text);font-size:0.85rem"/>
+        <button type="button" onclick="this.parentElement.remove()"
+          style="background:transparent;border:none;color:var(--text-3);font-size:1.1rem;cursor:pointer;padding:0 4px">✕</button>
+      `;
+      document.getElementById("metrics-list").appendChild(row);
     }
 
-    container.innerHTML = `<div class="activity-list">
-      ${list.map((a) => `
-        <div class="activity-item fade-in" data-id="${a.id}">
-          <div class="activity-item__icon">${UI.activityIcon(a.type)}</div>
-          <div class="activity-item__info" style="flex:1">
-            <div style="display:flex;align-items:center;gap:0.5rem">
-              <div class="activity-item__type">${a.type.replace("_", " ")}</div>
-              <span class="badge badge--green" style="font-size:0.65rem">${a.type}</span>
-            </div>
-            <div class="activity-item__date">${UI.formatDate(a.startTime || a.createdAt)}</div>
-            ${a.additionalMetrics ? `
-              <div style="margin-top:0.35rem;display:flex;flex-wrap:wrap;gap:0.35rem">
-                ${Object.entries(a.additionalMetrics).map(([k, v]) =>
-                  `<span style="font-size:0.72rem;background:var(--surface-2);
-                     border:1px solid var(--border);border-radius:4px;
-                     padding:2px 6px;color:var(--text-2)">
-                    <span style="color:var(--text-3)">${k}:</span> ${v}
-                  </span>`
-                ).join("")}
+    function collectMetrics() {
+      const obj = {};
+      document.querySelectorAll("#metrics-list > div").forEach((row) => {
+        const k = row.querySelector(".metric-key").value.trim();
+        const v = row.querySelector(".metric-val").value.trim();
+        if (k) {
+          // Try numeric, else string
+          obj[k] = isNaN(v) ? v : Number(v);
+        }
+      });
+      return Object.keys(obj).length ? obj : null;
+    }
+
+    // ── Track Activity ────────────────────────────────────────
+    async function handleTrack(e) {
+      e.preventDefault();
+      const btn = document.getElementById("btn-track");
+      UI.btnLoading(btn, true);
+
+      const startTime = document.getElementById("act-startTime").value;
+      const payload = {
+        userId: Auth.userId(),
+        type: document.getElementById("act-type").value,
+        duration: parseInt(document.getElementById("act-duration").value),
+        caloriesBurned: parseInt(document.getElementById("act-calories").value) || null,
+        startTime: startTime ? new Date(startTime).toISOString().replace("Z", "") : null,
+        additionalMetrics: collectMetrics(),
+      };
+
+      try {
+        await ActivityAPI.track(payload);
+        UI.toast("Activity logged successfully! 🔥");
+        document.getElementById("activity-form").reset();
+        document.getElementById("metrics-list").innerHTML = "";
+        // Reset datetime
+        const n = new Date();
+        n.setMinutes(n.getMinutes() - n.getTimezoneOffset());
+        document.getElementById("act-startTime").value = n.toISOString().slice(0, 16);
+        await loadActivities();
+      } catch (err) {
+        UI.toast(err.message || "Failed to log activity", "error");
+      } finally {
+        UI.btnLoading(btn, false);
+      }
+    }
+
+    // ── Load & Render Activities ──────────────────────────────
+    async function loadActivities() {
+      const container = document.getElementById("activities-container");
+      container.innerHTML = `<div class="spinner"></div>`;
+      try {
+        allActivities = await ActivityAPI.getByUser(Auth.userId());
+        // Sort newest first
+        allActivities.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        renderActivities(allActivities);
+      } catch (err) {
+        container.innerHTML = `<p style="color:var(--accent-err);font-size:0.875rem">${err.message}</p>`;
+      }
+    }
+
+    function renderActivities(list) {
+      const container = document.getElementById("activities-container");
+      if (list.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state__icon">🏋️</div>
+            <p>No activities found.<br>Log your first workout using the form!</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = `<div class="activity-list">
+        ${list.map((a) => `
+          <div class="activity-item fade-in" data-id="${a.id}">
+            <div class="activity-item__icon">${UI.activityIcon(a.type)}</div>
+            <div class="activity-item__info" style="flex:1">
+              <div style="display:flex;align-items:center;gap:0.5rem">
+                <div class="activity-item__type">${a.type.replace("_", " ")}</div>
+                <span class="badge badge--green" style="font-size:0.65rem">${a.type}</span>
               </div>
-            ` : ""}
+              <div class="activity-item__date">${UI.formatDate(a.startTime || a.createdAt)}</div>
+              ${a.additionalMetrics ? `
+                <div style="margin-top:0.35rem;display:flex;flex-wrap:wrap;gap:0.35rem">
+                  ${Object.entries(a.additionalMetrics).map(([k, v]) =>
+                    `<span style="font-size:0.72rem;background:var(--surface-2);
+                       border:1px solid var(--border);border-radius:4px;
+                       padding:2px 6px;color:var(--text-2)">
+                      <span style="color:var(--text-3)">${k}:</span> ${v}
+                    </span>`
+                  ).join("")}
+                </div>
+              ` : ""}
+            </div>
+            <div class="activity-item__stats">
+              <div class="stat-mini">
+                <span class="stat-mini__val">${UI.formatDuration(a.duration)}</span>
+                <span class="stat-mini__label">Duration</span>
+              </div>
+              <div class="stat-mini">
+                <span class="stat-mini__val">${a.caloriesBurned ?? "—"}</span>
+                <span class="stat-mini__label">Kcal</span>
+              </div>
+              <div class="stat-mini" style="display:flex;flex-direction:column;justify-content:center">
+                <a href="recommendations.html?activityId=${a.id}"
+                   class="btn btn--outline btn--sm" style="white-space:nowrap">Tips</a>
+              </div>
+            </div>
           </div>
-          <div class="activity-item__stats">
-            <div class="stat-mini">
-              <span class="stat-mini__val">${UI.formatDuration(a.duration)}</span>
-              <span class="stat-mini__label">Duration</span>
-            </div>
-            <div class="stat-mini">
-              <span class="stat-mini__val">${a.caloriesBurned ?? "—"}</span>
-              <span class="stat-mini__label">Kcal</span>
-            </div>
-            <div class="stat-mini" style="display:flex;flex-direction:column;justify-content:center">
-              <a href="recommendations.html?activityId=${a.id}"
-                 class="btn btn--outline btn--sm" style="white-space:nowrap">Tips</a>
-            </div>
-          </div>
-        </div>
-      `).join("")}
-    </div>`;
-  }
+        `).join("")}
+      </div>`;
+    }
 
-  function filterActivities() {
-    const type = document.getElementById("filter-type").value;
-    renderActivities(type ? allActivities.filter((a) => a.type === type) : allActivities);
-  }
+    function filterActivities() {
+      const type = document.getElementById("filter-type").value;
+      renderActivities(type ? allActivities.filter((a) => a.type === type) : allActivities);
+    }
 
-  loadActivities();
+    loadActivities();
 </script>
 </body>
 </html>

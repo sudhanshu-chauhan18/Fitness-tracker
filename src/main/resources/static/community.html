@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FitnessTacker — Community</title>
+  <title>FitnessTracker — Community</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ── Community-specific styles ── */
@@ -27,11 +28,20 @@
       transition: var(--transition);
       text-align: center;
     }
-    .user-card:hover  { border-color: var(--accent); background: var(--surface-2); }
-    .user-card.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+
+    .user-card:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+    }
+
+    .user-card.active {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
 
     .user-card__avatar {
-      width: 52px; height: 52px;
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -41,7 +51,10 @@
       transition: var(--transition);
       flex-shrink: 0;
     }
-    .user-card.active .user-card__avatar { border-color: var(--accent); }
+
+    .user-card.active .user-card__avatar {
+      border-color: var(--accent);
+    }
 
     .user-card__name {
       font-family: var(--font-head);
@@ -49,11 +62,13 @@
       letter-spacing: 0.05em;
       word-break: break-word;
     }
+
     .user-card__email {
       font-size: 0.72rem;
       color: var(--text-3);
       word-break: break-all;
     }
+
     .user-card__you {
       font-size: 0.7rem;
       font-weight: 700;
@@ -71,6 +86,7 @@
       border-radius: var(--radius-lg);
       overflow: hidden;
     }
+
     .activity-panel__header {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border);
@@ -78,8 +94,10 @@
       align-items: center;
       gap: 1rem;
     }
+
     .activity-panel__avatar {
-      width: 40px; height: 40px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: grid;
       place-items: center;
@@ -90,22 +108,27 @@
       background: var(--accent-glow);
       flex-shrink: 0;
     }
+
     .activity-panel__title {
       font-family: var(--font-head);
       font-size: 1.2rem;
       letter-spacing: 0.06em;
     }
+
     .activity-panel__sub {
       font-size: 0.78rem;
       color: var(--text-3);
     }
-    .activity-panel__body { padding: 1.25rem 1.5rem; }
+
+    .activity-panel__body {
+      padding: 1.25rem 1.5rem;
+    }
 
     /* ── Tip modal ── */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(4px);
       z-index: 200;
       display: grid;
@@ -115,10 +138,12 @@
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
+
     .modal-overlay.open {
       opacity: 1;
       pointer-events: all;
     }
+
     .modal {
       background: var(--surface);
       border: 1px solid var(--accent);
@@ -130,7 +155,10 @@
       transform: translateY(20px);
       transition: transform 0.25s ease;
     }
-    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-overlay.open .modal {
+      transform: translateY(0);
+    }
 
     .modal__header {
       display: flex;
@@ -138,7 +166,13 @@
       align-items: flex-start;
       margin-bottom: 1.5rem;
     }
-    .modal__title { font-family: var(--font-head); font-size: 1.4rem; letter-spacing: 0.06em; }
+
+    .modal__title {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+    }
+
     .modal__close {
       background: transparent;
       border: none;
@@ -148,7 +182,10 @@
       line-height: 1;
       padding: 0;
     }
-    .modal__close:hover { color: var(--text); }
+
+    .modal__close:hover {
+      color: var(--text);
+    }
 
     .tag-area {
       display: flex;
@@ -161,6 +198,7 @@
       padding: 0.5rem;
       margin-bottom: 0.35rem;
     }
+
     .tag-input {
       background: var(--surface-2);
       border: 1px solid var(--border);
@@ -170,6 +208,7 @@
       font-size: 0.85rem;
       width: 100%;
     }
+
     .tag-input:focus {
       outline: none;
       border-color: var(--accent);
@@ -177,142 +216,135 @@
     }
   </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar" id="nav"></nav>
+  <!-- Navbar -->
+  <nav class="navbar" id="nav"></nav>
 
-<main class="page">
+  <main class="page">
 
-  <!-- Page Header -->
-  <div class="page-header fade-in">
-    <h1>COM<span>MUNITY</span></h1>
-    <p>Browse other athletes' workouts and give them personalised tips.</p>
-  </div>
+    <!-- Page Header -->
+    <div class="page-header fade-in">
+      <h1>COM<span>MUNITY</span></h1>
+      <p>Browse other athletes' workouts and give them personalised tips.</p>
+    </div>
 
-  <!-- ── USER GRID ────────────────────────────────────────── -->
-  <h3 class="section-title fade-in">All Athletes</h3>
-  <div id="user-grid" class="user-grid">
-    <div class="spinner"></div>
-  </div>
+    <!-- ── USER GRID ────────────────────────────────────────── -->
+    <h3 class="section-title fade-in">All Athletes</h3>
+    <div id="user-grid" class="user-grid">
+      <div class="spinner"></div>
+    </div>
 
-  <!-- ── SELECTED USER ACTIVITIES ─────────────────────────── -->
-  <div id="activity-panel" style="display:none">
-    <div class="activity-panel">
-      <div class="activity-panel__header">
-        <div class="activity-panel__avatar" id="panel-avatar"></div>
-        <div>
-          <div class="activity-panel__title" id="panel-name"></div>
-          <div class="activity-panel__sub" id="panel-sub"></div>
+    <!-- ── SELECTED USER ACTIVITIES ─────────────────────────── -->
+    <div id="activity-panel" style="display:none">
+      <div class="activity-panel">
+        <div class="activity-panel__header">
+          <div class="activity-panel__avatar" id="panel-avatar"></div>
+          <div>
+            <div class="activity-panel__title" id="panel-name"></div>
+            <div class="activity-panel__sub" id="panel-sub"></div>
+          </div>
+        </div>
+        <div class="activity-panel__body" id="panel-body">
+          <div class="spinner"></div>
         </div>
       </div>
-      <div class="activity-panel__body" id="panel-body">
-        <div class="spinner"></div>
+    </div>
+
+  </main>
+
+  <!-- ── TIP MODAL ──────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
+    <div class="modal">
+      <div class="modal__header">
+        <div>
+          <div class="modal__title">GIVE A TIP</div>
+          <div id="modal-activity-info" style="font-size:0.8rem;color:var(--text-2);margin-top:0.25rem"></div>
+        </div>
+        <button class="modal__close" onclick="closeModal()">✕</button>
+      </div>
+
+      <!-- Improvements -->
+      <div class="form-group">
+        <label style="display:flex;justify-content:space-between;align-items:center">
+          <span>🔵 Improvements</span>
+          <button type="button" class="btn btn--ghost btn--sm" onclick="addModalTag('improvements')">+ Add</button>
+        </label>
+        <div class="tag-area" id="modal-tags-improvements"></div>
+        <input class="tag-input" id="modal-input-improvements" placeholder="Type and press Enter…"
+          onkeydown="modalTagEnter(event,'improvements')" />
+      </div>
+
+      <!-- Suggestions -->
+      <div class="form-group">
+        <label style="display:flex;justify-content:space-between;align-items:center">
+          <span>🟢 Suggestions</span>
+          <button type="button" class="btn btn--ghost btn--sm" onclick="addModalTag('suggestions')">+ Add</button>
+        </label>
+        <div class="tag-area" id="modal-tags-suggestions"></div>
+        <input class="tag-input" id="modal-input-suggestions" placeholder="Type and press Enter…"
+          onkeydown="modalTagEnter(event,'suggestions')" />
+      </div>
+
+      <!-- Safety -->
+      <div class="form-group">
+        <label style="display:flex;justify-content:space-between;align-items:center">
+          <span>🟠 Safety Notes</span>
+          <button type="button" class="btn btn--ghost btn--sm" onclick="addModalTag('safety')">+ Add</button>
+        </label>
+        <div class="tag-area" id="modal-tags-safety"></div>
+        <input class="tag-input" id="modal-input-safety" placeholder="Type and press Enter…"
+          onkeydown="modalTagEnter(event,'safety')" />
+      </div>
+
+      <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
+        <button class="btn btn--ghost" style="flex:1" onclick="closeModal()">Cancel</button>
+        <button class="btn btn--primary" style="flex:2" id="btn-submit-tip" onclick="submitTip()">Send Tip</button>
       </div>
     </div>
   </div>
 
-</main>
+  <script src="app.js"></script>
+  <script>
+    if (!Auth.require()) throw new Error("Redirecting");
+    UI.renderNav("community.html");
 
-<!-- ── TIP MODAL ──────────────────────────────────────────── -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModalOnBg(event)">
-  <div class="modal">
-    <div class="modal__header">
-      <div>
-        <div class="modal__title">GIVE A TIP</div>
-        <div id="modal-activity-info"
-             style="font-size:0.8rem;color:var(--text-2);margin-top:0.25rem"></div>
-      </div>
-      <button class="modal__close" onclick="closeModal()">✕</button>
-    </div>
+    // ── State ─────────────────────────────────────────────────
+    let selectedUser = null;   // { id, firstName, lastName, email }
+    let selectedActivity = null; // { id, type, duration, ... }
+    const modalTags = { improvements: [], suggestions: [], safety: [] };
 
-    <!-- Improvements -->
-    <div class="form-group">
-      <label style="display:flex;justify-content:space-between;align-items:center">
-        <span>🔵 Improvements</span>
-        <button type="button" class="btn btn--ghost btn--sm"
-                onclick="addModalTag('improvements')">+ Add</button>
-      </label>
-      <div class="tag-area" id="modal-tags-improvements"></div>
-      <input class="tag-input" id="modal-input-improvements"
-             placeholder="Type and press Enter…"
-             onkeydown="modalTagEnter(event,'improvements')" />
-    </div>
+    // Avatar color palette
+    const COLORS = [
+      "#e74c3c", "#e67e22", "#f1c40f", "#2ecc71",
+      "#1abc9c", "#3498db", "#9b59b6", "#e91e63"
+    ];
+    function avatarColor(str) {
+      let hash = 0;
+      for (const c of str) hash = c.charCodeAt(0) + ((hash << 5) - hash);
+      return COLORS[Math.abs(hash) % COLORS.length];
+    }
 
-    <!-- Suggestions -->
-    <div class="form-group">
-      <label style="display:flex;justify-content:space-between;align-items:center">
-        <span>🟢 Suggestions</span>
-        <button type="button" class="btn btn--ghost btn--sm"
-                onclick="addModalTag('suggestions')">+ Add</button>
-      </label>
-      <div class="tag-area" id="modal-tags-suggestions"></div>
-      <input class="tag-input" id="modal-input-suggestions"
-             placeholder="Type and press Enter…"
-             onkeydown="modalTagEnter(event,'suggestions')" />
-    </div>
+    // ── Load all users ─────────────────────────────────────────
+    async function loadUsers() {
+      try {
+        const users = await UserAPI.getAll();
+        const grid = document.getElementById("user-grid");
 
-    <!-- Safety -->
-    <div class="form-group">
-      <label style="display:flex;justify-content:space-between;align-items:center">
-        <span>🟠 Safety Notes</span>
-        <button type="button" class="btn btn--ghost btn--sm"
-                onclick="addModalTag('safety')">+ Add</button>
-      </label>
-      <div class="tag-area" id="modal-tags-safety"></div>
-      <input class="tag-input" id="modal-input-safety"
-             placeholder="Type and press Enter…"
-             onkeydown="modalTagEnter(event,'safety')" />
-    </div>
-
-    <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
-      <button class="btn btn--ghost" style="flex:1" onclick="closeModal()">Cancel</button>
-      <button class="btn btn--primary" style="flex:2" id="btn-submit-tip"
-              onclick="submitTip()">Send Tip</button>
-    </div>
-  </div>
-</div>
-
-<script src="app.js"></script>
-<script>
-  if (!Auth.require()) throw new Error("Redirecting");
-  UI.renderNav("community.html");
-
-  // ── State ─────────────────────────────────────────────────
-  let selectedUser   = null;   // { id, firstName, lastName, email }
-  let selectedActivity = null; // { id, type, duration, ... }
-  const modalTags = { improvements: [], suggestions: [], safety: [] };
-
-  // Avatar color palette
-  const COLORS = [
-    "#e74c3c","#e67e22","#f1c40f","#2ecc71",
-    "#1abc9c","#3498db","#9b59b6","#e91e63"
-  ];
-  function avatarColor(str) {
-    let hash = 0;
-    for (const c of str) hash = c.charCodeAt(0) + ((hash << 5) - hash);
-    return COLORS[Math.abs(hash) % COLORS.length];
-  }
-
-  // ── Load all users ─────────────────────────────────────────
-  async function loadUsers() {
-    try {
-      const users = await UserAPI.getAll();
-      const grid  = document.getElementById("user-grid");
-
-      if (!users.length) {
-        grid.innerHTML = `<div class="empty-state">
+        if (!users.length) {
+          grid.innerHTML = `<div class="empty-state">
           <div class="empty-state__icon">👥</div>
           <p>No other athletes yet.</p>
         </div>`;
-        return;
-      }
+          return;
+        }
 
-      grid.innerHTML = users.map(u => {
-        const isMe   = u.id === Auth.userId();
-        const initials = ((u.firstName?.[0] || "") + (u.lastName?.[0] || "")).toUpperCase() || "?";
-        const color  = avatarColor(u.id);
-        return `
+        grid.innerHTML = users.map(u => {
+          const isMe = u.id === Auth.userId();
+          const initials = ((u.firstName?.[0] || "") + (u.lastName?.[0] || "")).toUpperCase() || "?";
+          const color = avatarColor(u.id);
+          return `
           <div class="user-card fade-in ${isMe ? "active" : ""}"
                id="ucard-${u.id}"
                onclick="selectUser(${JSON.stringify(u).replace(/"/g, "&quot;")})">
@@ -324,93 +356,93 @@
             <div class="user-card__email">${u.email}</div>
             ${isMe ? '<span class="user-card__you">YOU</span>' : ""}
           </div>`;
-      }).join("");
+        }).join("");
 
-      // Auto-select first non-self user if available
-      const other = users.find(u => u.id !== Auth.userId());
-      if (other) selectUser(other);
+        // Auto-select first non-self user if available
+        const other = users.find(u => u.id !== Auth.userId());
+        if (other) selectUser(other);
 
-    } catch (err) {
-      document.getElementById("user-grid").innerHTML =
-        `<p style="color:var(--accent-err)">${err.message}</p>`;
+      } catch (err) {
+        document.getElementById("user-grid").innerHTML =
+          `<p style="color:var(--accent-err)">${err.message}</p>`;
+      }
     }
-  }
 
-  // ── Select a user → load their activities ─────────────────
-  async function selectUser(user) {
-    selectedUser = user;
+    // ── Select a user → load their activities ─────────────────
+    async function selectUser(user) {
+      selectedUser = user;
 
-    // Highlight selected card
-    document.querySelectorAll(".user-card").forEach(c => {
-      c.classList.toggle("active", c.id === `ucard-${user.id}`);
-    });
+      // Highlight selected card
+      document.querySelectorAll(".user-card").forEach(c => {
+        c.classList.toggle("active", c.id === `ucard-${user.id}`);
+      });
 
-    // Update panel header
-    const initials = ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase();
-    const color    = avatarColor(user.id);
-    const isMe     = user.id === Auth.userId();
+      // Update panel header
+      const initials = ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase();
+      const color = avatarColor(user.id);
+      const isMe = user.id === Auth.userId();
 
-    document.getElementById("panel-avatar").textContent  = initials;
-    document.getElementById("panel-avatar").style.background   = `${color}22`;
-    document.getElementById("panel-avatar").style.color        = color;
-    document.getElementById("panel-avatar").style.borderColor  = color;
-    document.getElementById("panel-name").textContent =
-      `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email;
-    document.getElementById("panel-sub").textContent =
-      isMe ? "Your own activities" : `${user.email} • Click an activity to give a tip`;
+      document.getElementById("panel-avatar").textContent = initials;
+      document.getElementById("panel-avatar").style.background = `${color}22`;
+      document.getElementById("panel-avatar").style.color = color;
+      document.getElementById("panel-avatar").style.borderColor = color;
+      document.getElementById("panel-name").textContent =
+        `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email;
+      document.getElementById("panel-sub").textContent =
+        isMe ? "Your own activities" : `${user.email} • Click an activity to give a tip`;
 
-    // Show panel
-    const panel = document.getElementById("activity-panel");
-    panel.style.display = "block";
-    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      // Show panel
+      const panel = document.getElementById("activity-panel");
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-    // Load their activities
-    document.getElementById("panel-body").innerHTML = `<div class="spinner"></div>`;
-    try {
-      const activities = await ActivityAPI.getByUser(user.id);
-      renderUserActivities(activities, isMe);
-    } catch (err) {
-      document.getElementById("panel-body").innerHTML =
-        `<p style="color:var(--accent-err);font-size:0.875rem">${err.message}</p>`;
+      // Load their activities
+      document.getElementById("panel-body").innerHTML = `<div class="spinner"></div>`;
+      try {
+        const activities = await ActivityAPI.getByUser(user.id);
+        renderUserActivities(activities, isMe);
+      } catch (err) {
+        document.getElementById("panel-body").innerHTML =
+          `<p style="color:var(--accent-err);font-size:0.875rem">${err.message}</p>`;
+      }
     }
-  }
 
-  // ── Render activities for selected user ────────────────────
-  function renderUserActivities(activities, isMe) {
-    const body = document.getElementById("panel-body");
+    // ── Render activities for selected user ────────────────────
+    function renderUserActivities(activities, isMe) {
+      const body = document.getElementById("panel-body");
 
-    if (!activities.length) {
-      body.innerHTML = `
+      if (!activities.length) {
+        body.innerHTML = `
         <div class="empty-state">
           <div class="empty-state__icon">🏁</div>
           <p>${isMe ? "You haven't" : "This athlete hasn't"} logged any activities yet.</p>
         </div>`;
-      return;
-    }
+        return;
+      }
 
-    const sorted = [...activities].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
+      const sorted = [...activities].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
 
-    body.innerHTML = `<div class="activity-list">
+      body.innerHTML = `<div class="activity-list">
       ${sorted.map(a => `
         <div class="activity-item fade-in">
           <div class="activity-item__icon">${UI.activityIcon(a.type)}</div>
           <div class="activity-item__info" style="flex:1">
             <div style="display:flex;align-items:center;gap:0.5rem">
-              <div class="activity-item__type">${a.type.replace("_"," ")}</div>
+              <div class="activity-item__type">${a.type.replace("_", " ")}</div>
               <span class="badge badge--green" style="font-size:0.65rem">${a.type}</span>
             </div>
             <div class="activity-item__date">${UI.formatDate(a.startTime || a.createdAt)}</div>
             ${a.additionalMetrics ? `
               <div style="margin-top:0.3rem;display:flex;flex-wrap:wrap;gap:0.3rem">
-                ${Object.entries(a.additionalMetrics).map(([k,v]) =>
-                  `<span style="font-size:0.72rem;background:var(--surface-2);
+                ${Object.entries(a.additionalMetrics).map(([k, v]) =>
+        `<span style="font-size:0.72rem;background:var(--surface-2);
                      border:1px solid var(--border);border-radius:4px;
                      padding:2px 6px;color:var(--text-2)">
                     <span style="color:var(--text-3)">${k}:</span> ${v}
                   </span>`
-                ).join("")}
+      ).join("")}
               </div>` : ""}
           </div>
           <div class="activity-item__stats">
@@ -424,71 +456,71 @@
             </div>
             <div class="stat-mini">
               ${isMe
-                ? `<span style="font-size:0.75rem;color:var(--text-3)">Your activity</span>`
-                : `<button class="btn btn--outline btn--sm"
-                     onclick='openModal(${JSON.stringify(a).replace(/'/g,"&#39;")})'>
+          ? `<span style="font-size:0.75rem;color:var(--text-3)">Your activity</span>`
+          : `<button class="btn btn--outline btn--sm"
+                     onclick='openModal(${JSON.stringify(a).replace(/'/g, "&#39;")})'>
                      💡 Give Tip
                    </button>`
-              }
+        }
             </div>
           </div>
         </div>
       `).join("")}
     </div>`;
-  }
+    }
 
-  // ── Modal ─────────────────────────────────────────────────
-  function openModal(activity) {
-    selectedActivity = activity;
-    // Reset tags
-    modalTags.improvements = [];
-    modalTags.suggestions  = [];
-    modalTags.safety       = [];
-    ["improvements","suggestions","safety"].forEach(renderModalTags);
-    ["improvements","suggestions","safety"].forEach(f => {
-      document.getElementById(`modal-input-${f}`).value = "";
-    });
+    // ── Modal ─────────────────────────────────────────────────
+    function openModal(activity) {
+      selectedActivity = activity;
+      // Reset tags
+      modalTags.improvements = [];
+      modalTags.suggestions = [];
+      modalTags.safety = [];
+      ["improvements", "suggestions", "safety"].forEach(renderModalTags);
+      ["improvements", "suggestions", "safety"].forEach(f => {
+        document.getElementById(`modal-input-${f}`).value = "";
+      });
 
-    document.getElementById("modal-activity-info").textContent =
-      `${UI.activityIcon(activity.type)} ${activity.type.replace("_"," ")} — ` +
-      `${UI.formatDuration(activity.duration)} • ` +
-      `for ${selectedUser.firstName || selectedUser.email}`;
+      document.getElementById("modal-activity-info").textContent =
+        `${UI.activityIcon(activity.type)} ${activity.type.replace("_", " ")} — ` +
+        `${UI.formatDuration(activity.duration)} • ` +
+        `for ${selectedUser.firstName || selectedUser.email}`;
 
-    document.getElementById("modal-overlay").classList.add("open");
-  }
+      document.getElementById("modal-overlay").classList.add("open");
+    }
 
-  function closeModal() {
-    document.getElementById("modal-overlay").classList.remove("open");
-  }
+    function closeModal() {
+      document.getElementById("modal-overlay").classList.remove("open");
+    }
 
-  function closeModalOnBg(e) {
-    if (e.target === document.getElementById("modal-overlay")) closeModal();
-  }
+    function closeModalOnBg(e) {
+      if (e.target === document.getElementById("modal-overlay")) closeModal();
+    }
 
-  // ── Modal Tags ────────────────────────────────────────────
-  function addModalTag(field) {
-    const input = document.getElementById(`modal-input-${field}`);
-    const val   = input.value.trim();
-    if (!val) return;
-    modalTags[field].push(val);
-    input.value = "";
-    renderModalTags(field);
-  }
+    // ── Modal Tags ────────────────────────────────────────────
+    function addModalTag(field) {
+      const input = document.getElementById(`modal-input-${field}`);
+      const val = input.value.trim();
+      if (!val) return;
+      modalTags[field].push(val);
+      input.value = "";
+      renderModalTags(field);
+    }
 
-  function removeModalTag(field, idx) {
-    modalTags[field].splice(idx, 1);
-    renderModalTags(field);
-  }
+    function removeModalTag(field, idx) {
+      modalTags[field].splice(idx, 1);
+      renderModalTags(field);
+    }
 
-  function renderModalTags(field) {
-    const colors = {
-      improvements: { bg: "rgba(41,182,246,0.15)", color: "var(--accent-blue)" },
-      suggestions:  { bg: "rgba(0,230,118,0.12)",  color: "var(--accent)" },
-      safety:       { bg: "rgba(255,167,38,0.15)", color: "var(--accent-warn)" },
-    };
-    const c = colors[field];
-    document.getElementById(`modal-tags-${field}`).innerHTML =
-      modalTags[field].map((t, i) => `
+    function renderModalTags(field) {
+      const colors = {
+        improvements: { bg: "rgba(41,182,246,0.15)", color: "var(--accent-blue)" },
+        suggestions: { bg: "rgba(0,230,118,0.12)", color: "var(--accent)" },
+        safety: { bg: "rgba(255,167,38,0.15)", color: "var(--accent-warn)" },
+      };
+      const c = colors[field];
+      document.getElementById(`modal-tags-${field}`).innerHTML =
+        modalTags[field].map((t, i) => `
         <span style="display:inline-flex;align-items:center;gap:0.35rem;
                padding:0.25rem 0.6rem;border-radius:100px;font-size:0.78rem;
                font-weight:500;background:${c.bg};color:${c.color}">
@@ -496,49 +528,50 @@
           <span onclick="removeModalTag('${field}',${i})"
                 style="cursor:pointer;opacity:0.7">✕</span>
         </span>`).join("");
-  }
-
-  function modalTagEnter(e, field) {
-    if (e.key === "Enter") { e.preventDefault(); addModalTag(field); }
-  }
-
-  // ── Submit Tip ────────────────────────────────────────────
-  async function submitTip() {
-    if (!selectedActivity || !selectedUser) return;
-
-    const hasContent =
-      modalTags.improvements.length ||
-      modalTags.suggestions.length  ||
-      modalTags.safety.length;
-
-    if (!hasContent) {
-      UI.toast("Add at least one tip before sending.", "error");
-      return;
     }
 
-    const btn = document.getElementById("btn-submit-tip");
-    UI.btnLoading(btn, true);
-
-    try {
-      await RecommendationAPI.generate({
-        userId:       selectedUser.id,        // tip is FOR this user
-        activityId:   selectedActivity.id,
-        improvements: [...modalTags.improvements],
-        suggestions:  [...modalTags.suggestions],
-        safety:       [...modalTags.safety],
-      });
-
-      UI.toast(`Tip sent to ${selectedUser.firstName || selectedUser.email}! 💡`);
-      closeModal();
-    } catch (err) {
-      UI.toast(err.message || "Failed to send tip", "error");
-    } finally {
-      UI.btnLoading(btn, false);
+    function modalTagEnter(e, field) {
+      if (e.key === "Enter") { e.preventDefault(); addModalTag(field); }
     }
-  }
 
-  // ── Init ──────────────────────────────────────────────────
-  loadUsers();
-</script>
+    // ── Submit Tip ────────────────────────────────────────────
+    async function submitTip() {
+      if (!selectedActivity || !selectedUser) return;
+
+      const hasContent =
+        modalTags.improvements.length ||
+        modalTags.suggestions.length ||
+        modalTags.safety.length;
+
+      if (!hasContent) {
+        UI.toast("Add at least one tip before sending.", "error");
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-tip");
+      UI.btnLoading(btn, true);
+
+      try {
+        await RecommendationAPI.generate({
+          userId: selectedUser.id,        // tip is FOR this user
+          activityId: selectedActivity.id,
+          improvements: [...modalTags.improvements],
+          suggestions: [...modalTags.suggestions],
+          safety: [...modalTags.safety],
+        });
+
+        UI.toast(`Tip sent to ${selectedUser.firstName || selectedUser.email}! 💡`);
+        closeModal();
+      } catch (err) {
+        UI.toast(err.message || "Failed to send tip", "error");
+      } finally {
+        UI.btnLoading(btn, false);
+      }
+    }
+
+    // ── Init ──────────────────────────────────────────────────
+    loadUsers();
+  </script>
 </body>
+
 </html>

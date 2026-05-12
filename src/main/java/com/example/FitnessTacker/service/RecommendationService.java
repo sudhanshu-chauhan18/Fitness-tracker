@@ -4,6 +4,7 @@ import com.example.FitnessTacker.Model.Activity;
 import com.example.FitnessTacker.Model.Recommendations;
 import com.example.FitnessTacker.Model.User;
 import com.example.FitnessTacker.dto.RecommendationRequest;
+import com.example.FitnessTacker.dto.RecommendationResponse;
 import com.example.FitnessTacker.repository.ActivityRepository;
 import com.example.FitnessTacker.repository.RecommendationRepository;
 import com.example.FitnessTacker.repository.UserRepository;
@@ -21,7 +22,7 @@ public class RecommendationService {
     private final UserRepository userRepository;
     private final ActivityRepository activityRepository;
 
-    public Recommendations generateRecommendation(RecommendationRequest request) {
+    public RecommendationResponse generateRecommendation(RecommendationRequest request) {
 
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("User Not found with this ID : " + request.getUserId()));
@@ -37,16 +38,39 @@ public class RecommendationService {
                 .suggestions(request.getSuggestions())
                 .build();
 
-        return recommendationRepository.save(recommendations);
+        Recommendations saved = recommendationRepository.save(recommendations);
+        return mapToResponse(saved);
 
     }
 
-    public List<Recommendations> getAllRecommendations(String userId) {
-        List<Recommendations> recommendationsList = recommendationRepository.findByUserId(userId);
-        return recommendationsList;
+    public List<RecommendationResponse> getAllRecommendations(String userId) {
+        return recommendationRepository.findByUserId(userId)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<Recommendations> getActivityRecommendation(String activityId) {
-        return recommendationRepository.findByActivityId(activityId);
+    public List<RecommendationResponse> getActivityRecommendation(String activityId) {
+        return recommendationRepository.findByActivityId(activityId)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private RecommendationResponse mapToResponse(Recommendations rec) {
+        RecommendationResponse response = new RecommendationResponse();
+        response.setId(rec.getId());
+        response.setActivityId(rec.getActivity().getId());
+        response.setActivityType(rec.getActivity().getType() != null
+                ? rec.getActivity().getType().name()
+                : null);
+        response.setType(rec.getType());
+        response.setRecommendation(rec.getRecommendation());
+        response.setImprovements(rec.getImprovements());
+        response.setSuggestions(rec.getSuggestions());
+        response.setSafety(rec.getSafety());
+        response.setCreatedAt(rec.getCreatedAt());
+        response.setUpdatedAt(rec.getUpdatedAt());
+        return response;
     }
 }
